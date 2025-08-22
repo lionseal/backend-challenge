@@ -3,6 +3,7 @@ import { Job } from './Job';
 import { Workflow } from '../models/Workflow';
 import { TaskStatus } from '../workers/taskRunner';
 import { Repository } from 'typeorm';
+import { generateReport } from '../utils/report';
 
 interface Report {
     workflowId: string;
@@ -40,24 +41,7 @@ export class ReportGenerationJob implements Job {
                     type: t.taskType,
                     output: t.result.data,
                 })),
-                /**
-                 * Should look something like this:
-                 * Task #1 analysis completed, result:
-                 * {...}
-                 * Task #2 area calculation completed, result:
-                 * {...}
-                 * ...
-                 */
-                finalReport: tasks
-                    .map(
-                        t =>
-                            `Task #${t.stepNumber} ${t.taskType} ${t.status}, result:\n${JSON.stringify(
-                                JSON.parse(t.result.data || '{}'),
-                                null,
-                                2
-                            )}`
-                    )
-                    .join('\n'),
+                finalReport: generateReport(tasks),
             };
             return result;
         } catch (error) {
