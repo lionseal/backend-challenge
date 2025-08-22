@@ -1,5 +1,5 @@
 import { describe, it, expect } from '@jest/globals';
-import '../models/Workflow';
+import '../models/Workflow'; // to avoid cyclic dependency issues this has to be imported first
 import { WorkflowFactory, WorkflowStatus } from './WorkflowFactory';
 import post_workflow from '../fixtures/post_workflow.json';
 import path from 'path';
