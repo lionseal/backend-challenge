@@ -1,22 +1,33 @@
-import {AppDataSource} from '../data-source';
-import {Task} from '../models/Task';
-import {TaskRunner, TaskStatus} from './taskRunner';
+import { AppDataSource } from '../data-source';
+import { Task } from '../models/Task';
+import { TaskRunner, TaskStatus } from './taskRunner';
 
 export async function taskWorker() {
     const taskRepository = AppDataSource.getRepository(Task);
     const taskRunner = new TaskRunner(taskRepository);
 
     while (true) {
-        const task = await taskRepository.findOne({
-            where: { status: TaskStatus.Queued },
-            relations: ['workflow'], // Ensure workflow is loaded
-            order: { stepNumber: 'ASC' }, // Process tasks in order of stepNumber
-        });
-
+        const task = await taskRepository
+            .createQueryBuilder('task')
+            .leftJoinAndSelect('task.workflow', 'workflow')
+            .leftJoinAndSelect('task.dependencies', 'dep')
+            .where('task.status = :queued', { queued: TaskStatus.Queued })
+            .andWhere(qb => {
+                const sub = qb
+                    .subQuery()
+                    .select('1')
+                    .from(Task, 'd')
+                    .innerJoin('task_dependencies', 'td', 'td.dependencyId = d.taskId')
+                    .where('td.taskId = task.taskId')
+                    .andWhere('d.status NOT IN (:...status)', { status: [TaskStatus.Completed, TaskStatus.Failed] })
+                    .getQuery();
+                return `NOT EXISTS ${sub}`;
+            })
+            .orderBy('task.stepNumber', 'ASC')
+            .getOne();
         if (task) {
             try {
                 await taskRunner.run(task);
-
             } catch (error) {
                 console.error('Task execution failed. Task status has already been updated by TaskRunner.');
                 console.error(error);

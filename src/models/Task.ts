@@ -37,7 +37,11 @@ export class Task {
 
     // Tasks this one depends on
     @ManyToMany(() => Task, task => task.dependents)
-    @JoinTable()
+    @JoinTable({
+        name: 'task_dependencies', // custom join table
+        joinColumn: { name: 'taskId', referencedColumnName: 'taskId' },
+        inverseJoinColumn: { name: 'dependencyId', referencedColumnName: 'taskId' },
+    })
     dependencies!: Task[];
 
     // Tasks that depend on this one
