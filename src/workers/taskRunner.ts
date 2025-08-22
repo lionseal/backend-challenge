@@ -1,21 +1,19 @@
 import { Repository } from 'typeorm';
 import { Task } from '../models/Task';
 import { getJobForTaskType } from '../jobs/JobFactory';
-import {WorkflowStatus} from "../workflows/WorkflowFactory";
-import {Workflow} from "../models/Workflow";
-import {Result} from "../models/Result";
+import { WorkflowStatus } from '../workflows/WorkflowFactory';
+import { Workflow } from '../models/Workflow';
+import { Result } from '../models/Result';
 
 export enum TaskStatus {
     Queued = 'queued',
     InProgress = 'in_progress',
     Completed = 'completed',
-    Failed = 'failed'
+    Failed = 'failed',
 }
 
 export class TaskRunner {
-    constructor(
-        private taskRepository: Repository<Task>,
-    ) {}
+    constructor(private taskRepository: Repository<Task>) {}
 
     /**
      * Runs the appropriate job based on the task's type, managing the task's status.
@@ -28,9 +26,9 @@ export class TaskRunner {
         await this.taskRepository.save(task);
         const job = getJobForTaskType(task.taskType);
 
+        const resultRepository = this.taskRepository.manager.getRepository(Result);
         try {
             console.log(`Starting job ${task.taskType} for task ${task.taskId}...`);
-            const resultRepository = this.taskRepository.manager.getRepository(Result);
             const taskResult = await job.run(task);
             console.log(`Job ${task.taskType} for task ${task.taskId} completed successfully.`);
             const result = new Result();
@@ -41,10 +39,14 @@ export class TaskRunner {
             task.status = TaskStatus.Completed;
             task.progress = null;
             await this.taskRepository.save(task);
-
         } catch (error: any) {
             console.error(`Error running job ${task.taskType} for task ${task.taskId}:`, error);
-
+            // Save error details in Result
+            const result = new Result();
+            result.taskId = task.taskId!;
+            result.data = JSON.stringify({ error: error.message || 'Unknown error', stack: error.stack || null });
+            await resultRepository.save(result);
+            task.resultId = result.resultId!;
             task.status = TaskStatus.Failed;
             task.progress = null;
             await this.taskRepository.save(task);
@@ -53,7 +55,10 @@ export class TaskRunner {
         }
 
         const workflowRepository = this.taskRepository.manager.getRepository(Workflow);
-        const currentWorkflow = await workflowRepository.findOne({ where: { workflowId: task.workflow.workflowId }, relations: ['tasks'] });
+        const currentWorkflow = await workflowRepository.findOne({
+            where: { workflowId: task.workflow.workflowId },
+            relations: ['tasks'],
+        });
 
         if (currentWorkflow) {
             const allCompleted = currentWorkflow.tasks.every(t => t.status === TaskStatus.Completed);
