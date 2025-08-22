@@ -23,4 +23,4 @@ Step 3
 3. done
 4. done, added cycle dependency detection
 
-missing automated tests, manual test ok
+Note: added new workflow for testing cyclic dependencies, endpoint could be updated to accept workflow name...
