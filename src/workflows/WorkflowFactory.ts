@@ -60,19 +60,6 @@ export class WorkflowFactory {
             task.workflow = savedWorkflow;
             return task;
         });
-        // Add a final report task
-        const reportTask = new Task();
-        reportTask.clientId = clientId;
-        reportTask.geoJson = geoJson;
-        reportTask.status = TaskStatus.Queued;
-        reportTask.taskType = 'report';
-        // ensure it's the last step
-        reportTask.stepNumber =
-            tasks.reduce((max, task) => {
-                return task.stepNumber > max ? task.stepNumber : max;
-            }, 0) + 1;
-        reportTask.workflow = savedWorkflow;
-        tasks.push(reportTask);
 
         const dbTasks = await taskRepository.save(tasks);
 

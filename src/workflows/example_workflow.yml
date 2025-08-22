@@ -7,3 +7,6 @@ steps:
       dependsOn: ['area', 'analysis']
     - taskType: 'area'
       stepNumber: 3
+    - taskType: 'report'
+      stepNumber: 4
+      dependsOn: ['analysis', 'area', 'notification']
