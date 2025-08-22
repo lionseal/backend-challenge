@@ -8,5 +8,6 @@ export function workflowRoutes() {
   const router = Router();
   const controller = new WorkflowController(new WorkflowService(AppDataSource.getRepository(Workflow)));
   router.get('/:workflowId/status', controller.getWorkflowStatus);
+  router.get('/:workflowId/results', controller.getWorkflowResults);
   return router;
 };

@@ -11,5 +11,9 @@ export class WorkflowController {
         handleOk(req, res, result);
     });
 
+    getWorkflowResults = asyncHandler(async (req, res) => {
+        const { workflowId } = req.params;
+        const result = await this.workflowService.getWorkflowResults(workflowId);
+        handleOk(req, res, result);
     });
 }

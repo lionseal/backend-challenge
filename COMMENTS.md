@@ -39,3 +39,5 @@ Step 5
 Note: Organized the route as follows:
 route definition => controller (calls the service and handles the response) => service (business logic)
 
+Step 6
+1. done
