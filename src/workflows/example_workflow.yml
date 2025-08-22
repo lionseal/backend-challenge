@@ -1,8 +1,9 @@
-name: "example_workflow"
+name: 'example_workflow'
 steps:
-  - taskType: "analysis"
-    stepNumber: 1
-  - taskType: "area"
-    stepNumber: 2
-  - taskType: "notification"
-    stepNumber: 3
+    - taskType: 'analysis'
+      stepNumber: 1
+    - taskType: 'notification'
+      stepNumber: 2
+      dependsOn: ['area', 'analysis']
+    - taskType: 'area'
+      stepNumber: 3

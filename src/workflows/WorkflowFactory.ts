@@ -4,6 +4,7 @@ import { DataSource } from 'typeorm';
 import { Workflow } from '../models/Workflow';
 import { Task } from '../models/Task';
 import { TaskStatus } from '../workers/taskRunner';
+import { hasCycle } from '../utils/graph';
 
 export enum WorkflowStatus {
     Initial = 'initial',
@@ -12,9 +13,10 @@ export enum WorkflowStatus {
     Failed = 'failed',
 }
 
-interface WorkflowStep {
+export interface WorkflowStep {
     taskType: string;
     stepNumber: number;
+    dependsOn?: string[];
 }
 
 interface WorkflowDefinition {
@@ -35,6 +37,10 @@ export class WorkflowFactory {
     async createWorkflowFromYAML(filePath: string, clientId: string, geoJson: string): Promise<Workflow> {
         const fileContent = fs.readFileSync(filePath, 'utf8');
         const workflowDef = yaml.load(fileContent) as WorkflowDefinition;
+        // Checking for cycles in the workflow steps
+        if (hasCycle(workflowDef.steps)) {
+            throw new Error('The workflow definition contains cyclic dependencies.');
+        }
         const workflowRepository = this.dataSource.getRepository(Workflow);
         const taskRepository = this.dataSource.getRepository(Task);
         const workflow = new Workflow();
@@ -68,7 +74,23 @@ export class WorkflowFactory {
         reportTask.workflow = savedWorkflow;
         tasks.push(reportTask);
 
-        await taskRepository.save(tasks);
+        const dbTasks = await taskRepository.save(tasks);
+
+        // Setting up dependencies
+        const taskMap = new Map<string, Task>();
+        for (const task of dbTasks) {
+            taskMap.set(task.taskType, task);
+        }
+        for (const step of workflowDef.steps) {
+            if (step.dependsOn?.length) {
+                const currentTask = taskMap.get(step.taskType);
+                if (!currentTask) continue;
+                currentTask.dependencies = step.dependsOn
+                    .map(depType => taskMap.get(depType))
+                    .filter((t) => t !== undefined);
+                await taskRepository.save(currentTask);
+            }
+        }
 
         return savedWorkflow;
     }
