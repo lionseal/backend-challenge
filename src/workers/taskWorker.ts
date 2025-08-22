@@ -1,5 +1,6 @@
 import { AppDataSource } from '../data-source';
 import { Task } from '../models/Task';
+import { WorkflowStatus } from '../workflows/WorkflowFactory';
 import { TaskRunner, TaskStatus } from './taskRunner';
 
 export async function taskWorker() {
@@ -13,6 +14,7 @@ export async function taskWorker() {
             .leftJoinAndSelect('task.dependencies', 'dep')
             .leftJoinAndSelect('dep.result', 'depResult')
             .where('task.status = :queued', { queued: TaskStatus.Queued })
+            .andWhere('workflow.status NOT IN (:...status)', { status: [WorkflowStatus.Completed, WorkflowStatus.Failed] }) // added to prevent processing tasks from completed/failed workflows
             .andWhere(qb => {
                 const sub = qb
                     .subQuery()
