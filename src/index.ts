@@ -5,12 +5,14 @@ import defaultRoute from './routes/defaultRoute';
 import { workflowRoutes } from './routes/workflowRoutes';
 import { taskWorker } from './workers/taskWorker';
 import { AppDataSource } from './data-source'; // Import the DataSource instance
+import { expressErrorHandler } from './middlewares/errorHandler';
 
 const app = express();
 app.use(express.json());
 app.use('/analysis', analysisRoutes);
 app.use('/', defaultRoute);
 app.use('/workflow', workflowRoutes());
+app.use(expressErrorHandler)
 
 AppDataSource.initialize()
     .then(() => {

@@ -7,7 +7,7 @@ export class WorkflowService {
 
     async getWorkflowStatus(workflowId: string) {
         const workflow = await this.workflowRepository.findOne({ where: { workflowId }, relations: ['tasks'] });
-        if (!workflow) return null;
+        if (!workflow) throw new NotFoundError('Workflow');
         return {
             workflowId: workflow.workflowId,
             status: workflow.status,
