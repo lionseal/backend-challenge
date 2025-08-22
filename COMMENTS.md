@@ -24,3 +24,11 @@ Step 3
 4. done, added cycle dependency detection
 
 Note: added new workflow for testing cyclic dependencies, endpoint could be updated to accept workflow name...
+
+Step 4
+1. done
+2. done
+3. done
+
+Removed forced task from step 2, it should be added manually to the workflow now (I added it to the basic example).
+Extracted final report generation from ReportGenerationJob, I could call that job instead of the summary function, but this should be fine, for detailed output we could just fetch the workflow.tasks.output...
