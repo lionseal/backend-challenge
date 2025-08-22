@@ -19,7 +19,7 @@ Or the report should be manually defined in each workflow yaml... (I said each, 
 
 Step 3
 1. done
-2. done, missing passing the outputs from dependencies
+2. done
 3. done
 4. done, added cycle dependency detection
 

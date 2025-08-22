@@ -4,6 +4,7 @@ import { getJobForTaskType } from '../jobs/JobFactory';
 import { WorkflowStatus } from '../workflows/WorkflowFactory';
 import { Workflow } from '../models/Workflow';
 import { Result } from '../models/Result';
+import { JobInputs } from '../jobs/Job';
 
 export enum TaskStatus {
     Queued = 'queued',
@@ -29,7 +30,11 @@ export class TaskRunner {
         const resultRepository = this.taskRepository.manager.getRepository(Result);
         try {
             console.log(`Starting job ${task.taskType} for task ${task.taskId}...`);
-            const taskResult = await job.run(task);
+            const inputs = task.dependencies.reduce((acc, dep) => {
+                acc[dep.taskType] = dep.result ? JSON.parse(dep.result.data || '{}') : null;
+                return acc;
+            }, {} as JobInputs);
+            const taskResult = await job.run(task, inputs);
             console.log(`Job ${task.taskType} for task ${task.taskId} completed successfully.`);
             const result = new Result();
             result.taskId = task.taskId!;

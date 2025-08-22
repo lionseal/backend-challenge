@@ -11,6 +11,7 @@ export async function taskWorker() {
             .createQueryBuilder('task')
             .leftJoinAndSelect('task.workflow', 'workflow')
             .leftJoinAndSelect('task.dependencies', 'dep')
+            .leftJoinAndSelect('dep.result', 'depResult')
             .where('task.status = :queued', { queued: TaskStatus.Queued })
             .andWhere(qb => {
                 const sub = qb
