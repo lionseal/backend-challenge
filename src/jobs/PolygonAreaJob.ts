@@ -10,7 +10,11 @@ interface PolygonAreaJobResult {
 export class PolygonAreaJob implements Job {
   async run(task: Task): Promise<PolygonAreaJobResult> {
     try {
-      const area = this.calculateArea(JSON.parse(task.geoJson));
+      const geoJson = JSON.parse(task.geoJson);
+      if (!geoJson.type || !geoJson.coordinates) {
+        throw new Error("Invalid GeoJSON object");
+      }
+      const area = this.calculateArea(geoJson);
       console.log(`Calculated area for task ${task.taskId}: ${area}`);
       // Returning an object with area, later it could be extended to include more details if needed
       // ie: number of nodes, triangles, center, etc.
