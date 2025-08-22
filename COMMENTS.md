@@ -32,3 +32,10 @@ Step 4
 
 Removed forced task from step 2, it should be added manually to the workflow now (I added it to the basic example).
 Extracted final report generation from ReportGenerationJob, I could call that job instead of the summary function, but this should be fine, for detailed output we could just fetch the workflow.tasks.output...
+
+Step 5
+1. done
+
+Note: Organized the route as follows:
+route definition => controller (calls the service and handles the response) => service (business logic)
+
