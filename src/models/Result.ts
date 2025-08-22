@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Task } from './Task';
 
-@Entity({name: 'results'})
+@Entity({ name: 'results' })
 export class Result {
     @PrimaryGeneratedColumn('uuid')
     resultId!: string;
@@ -10,4 +11,8 @@ export class Result {
 
     @Column('text')
     data!: string | null; // Could be JSON or any serialized format
+
+    @ManyToOne(() => Task, task => task.result)
+    @JoinColumn({ name: 'taskId' })
+    task!: Task;
 }
