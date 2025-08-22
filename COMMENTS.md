@@ -17,3 +17,5 @@ Since it's not specified if this job should be manually added to the workflow ya
 A parameter could be added when creating the workflow to prevent this from being added automatically.
 Or the report should be manually defined in each workflow yaml... (I said each, since that could also be a parameter to define which workflow you want to run)
 
+Step 3
+1. ok

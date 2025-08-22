@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, OneToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne, ManyToMany, JoinTable } from 'typeorm';
 import { Workflow } from './Workflow';
 import { TaskStatus } from '../workers/taskRunner';
 import { Result } from './Result';
@@ -34,4 +34,13 @@ export class Task {
 
     @OneToOne(() => Result, result => result.task)
     result!: Result;
+
+    // Tasks this one depends on
+    @ManyToMany(() => Task, task => task.dependents)
+    @JoinTable()
+    dependencies!: Task[];
+
+    // Tasks that depend on this one
+    @ManyToMany(() => Task, task => task.dependencies)
+    dependents!: Task[];
 }
