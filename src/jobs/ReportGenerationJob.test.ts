@@ -5,7 +5,7 @@ import workflow from '../fixtures/workflow.json';
 import workflow_incomplete from '../fixtures/workflow_incomplete.json';
 import workflow_failed from '../fixtures/workflow_failed.json';
 
-describe('PolygonAreaJob', () => {
+describe('ReportGenerationJob', () => {
     let job: ReportGenerationJob;
 
     it('returns final report', async () => {
