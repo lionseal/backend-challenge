@@ -8,6 +8,11 @@ interface PolygonAreaJobResult {
 }
 
 export class PolygonAreaJob implements Job {
+  /**
+   * Calculates the area of a polygon defined in the task's geoJson property.
+   * taskRunner will store the result in the Result table as a JSON object and handle setting the
+   * task status to Failed if an error is thrown.
+   */
   async run(task: Task): Promise<PolygonAreaJobResult> {
     try {
       const geoJson = JSON.parse(task.geoJson);
@@ -21,7 +26,6 @@ export class PolygonAreaJob implements Job {
       return { area };
     } catch (error) {
       console.error(`Error calculating area for task ${task.taskId}:`, error);
-      // taskRunner will handle setting the task status to Failed
       throw error;
     }
   }
