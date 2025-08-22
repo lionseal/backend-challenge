@@ -1,0 +1,63 @@
+{
+  "workflowId": "dae502d7-2d87-4d93-8087-5d1b76dec97f",
+  "clientId": "client123",
+  "status": "in_progress",
+  "tasks": [
+    {
+      "taskId": "9411f657-8a0a-4898-a447-c87cc647dc9a",
+      "clientId": "client123",
+      "geoJson": "{\"type\":\"Polygon\",\"coordinates\":[[[-63.624885020050996,-10.311050368263523],[-63.624885020050996,-10.367865108370523],[-63.61278302732815,-10.367865108370523],[-63.61278302732815,-10.311050368263523],[-63.624885020050996,-10.311050368263523]]]}",
+      "status": "completed",
+      "progress": null,
+      "resultId": "1d65e209-2617-4b74-b781-3f5c69d77485",
+      "taskType": "analysis",
+      "stepNumber": 1,
+      "result": {
+        "resultId": "1d65e209-2617-4b74-b781-3f5c69d77485",
+        "taskId": "9411f657-8a0a-4898-a447-c87cc647dc9a",
+        "data": "\"Brazil\""
+      }
+    },
+    {
+      "taskId": "93170a9e-3f2d-4990-a1e4-98c6535a5ae6",
+      "clientId": "client123",
+      "geoJson": "{\"type\":\"Polygon\",\"coordinates\":[[[-63.624885020050996,-10.311050368263523],[-63.624885020050996,-10.367865108370523],[-63.61278302732815,-10.367865108370523],[-63.61278302732815,-10.311050368263523],[-63.624885020050996,-10.311050368263523]]]}",
+      "status": "completed",
+      "progress": null,
+      "resultId": "6a03dec0-812c-4fef-b61f-7662a8a0deb5",
+      "taskType": "area",
+      "stepNumber": 2,
+      "result": {
+        "resultId": "6a03dec0-812c-4fef-b61f-7662a8a0deb5",
+        "taskId": "93170a9e-3f2d-4990-a1e4-98c6535a5ae6",
+        "data": "{\"area\":8363324.273315565}"
+      }
+    },
+    {
+      "taskId": "ce2f0207-c3ea-4694-be16-b9eebf2c8157",
+      "clientId": "client123",
+      "geoJson": "{\"type\":\"Polygon\",\"coordinates\":[[[-63.624885020050996,-10.311050368263523],[-63.624885020050996,-10.367865108370523],[-63.61278302732815,-10.367865108370523],[-63.61278302732815,-10.311050368263523],[-63.624885020050996,-10.311050368263523]]]}",
+      "status": "in_progress",
+      "progress": null,
+      "resultId": "465c8160-86f2-4eb5-bfb1-71570a50fd47",
+      "taskType": "notification",
+      "stepNumber": 3,
+      "result": {
+        "resultId": "465c8160-86f2-4eb5-bfb1-71570a50fd47",
+        "taskId": "ce2f0207-c3ea-4694-be16-b9eebf2c8157",
+        "data": "{}"
+      }
+    },
+    {
+      "taskId": "9ea8d598-dbda-4575-a54b-fd17392a6f6e",
+      "clientId": "client123",
+      "geoJson": "{\"type\":\"Polygon\",\"coordinates\":[[[-63.624885020050996,-10.311050368263523],[-63.624885020050996,-10.367865108370523],[-63.61278302732815,-10.367865108370523],[-63.61278302732815,-10.311050368263523],[-63.624885020050996,-10.311050368263523]]]}",
+      "status": "queued",
+      "progress": "starting job...",
+      "resultId": null,
+      "taskType": "report",
+      "stepNumber": 4,
+      "result": null
+    }
+  ]
+}

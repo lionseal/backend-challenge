@@ -1,0 +1,63 @@
+{
+  "workflowId": "b2b05629-c706-47f5-8bdd-43ed3fc3e4e2",
+  "clientId": "client123",
+  "status": "in_progress",
+  "tasks": [
+    {
+      "taskId": "89d15d6c-8a73-47b6-b9c9-4f27c76c17a2",
+      "clientId": "client123",
+      "geoJson": "{\"type\":\"Polygon\",\"coordinates\":[[[-63.624885020050996,-10.311050368263523],[-63.624885020050996,-10.367865108370523],[-63.61278302732815,-10.367865108370523],[-63.61278302732815,-10.311050368263523],[-63.624885020050996,-10.311050368263523]]]}",
+      "status": "completed",
+      "progress": null,
+      "resultId": "7fb83545-a1d6-4f4a-8b07-8a688a35d480",
+      "taskType": "analysis",
+      "stepNumber": 1,
+      "result": {
+        "resultId": "7fb83545-a1d6-4f4a-8b07-8a688a35d480",
+        "taskId": "89d15d6c-8a73-47b6-b9c9-4f27c76c17a2",
+        "data": "\"Brazil\""
+      }
+    },
+    {
+      "taskId": "e97a42ec-9261-4da4-ab5d-ec284f5fca3d",
+      "clientId": "client123",
+      "geoJson": "{\"type\":\"Polygon\",\"coordinates\":[[[-63.624885020050996,-10.311050368263523],[-63.624885020050996,-10.367865108370523],[-63.61278302732815,-10.367865108370523],[-63.61278302732815,-10.311050368263523],[-63.624885020050996,-10.311050368263523]]]}",
+      "status": "completed",
+      "progress": null,
+      "resultId": "bd6d5c39-0733-49a9-8503-c5a61b19c774",
+      "taskType": "area",
+      "stepNumber": 2,
+      "result": {
+        "resultId": "bd6d5c39-0733-49a9-8503-c5a61b19c774",
+        "taskId": "e97a42ec-9261-4da4-ab5d-ec284f5fca3d",
+        "data": "{\"area\":8363324.273315565}"
+      }
+    },
+    {
+      "taskId": "fcc3b218-a73c-44e2-9209-9951baa779e0",
+      "clientId": "client123",
+      "geoJson": "{\"type\":\"Polygon\",\"coordinates\":[[[-63.624885020050996,-10.311050368263523],[-63.624885020050996,-10.367865108370523],[-63.61278302732815,-10.367865108370523],[-63.61278302732815,-10.311050368263523],[-63.624885020050996,-10.311050368263523]]]}",
+      "status": "failed",
+      "progress": null,
+      "resultId": "0b43d450-57f2-4b9b-9150-051d9a98878d",
+      "taskType": "notification",
+      "stepNumber": 3,
+      "result": {
+        "resultId": "0b43d450-57f2-4b9b-9150-051d9a98878d",
+        "taskId": "fcc3b218-a73c-44e2-9209-9951baa779e0",
+        "data": "{\"error\":\"Simulated email failure\",\"stack\":\"Error: Simulated email failure\\n    at EmailNotificationJob.run (/backend-challenge/src/jobs/EmailNotificationJob.ts:10:15)\\n    at async TaskRunner.run (/backend-challenge/src/workers/taskRunner.ts:32:32)\\n    at async taskWorker (/backend-challenge/src/workers/taskWorker.ts:18:17)\"}"
+      }
+    },
+    {
+      "taskId": "9873f132-cd45-49da-b633-24e01b0679ba",
+      "clientId": "client123",
+      "geoJson": "{\"type\":\"Polygon\",\"coordinates\":[[[-63.624885020050996,-10.311050368263523],[-63.624885020050996,-10.367865108370523],[-63.61278302732815,-10.367865108370523],[-63.61278302732815,-10.311050368263523],[-63.624885020050996,-10.311050368263523]]]}",
+      "status": "in_progress",
+      "progress": "starting job...",
+      "resultId": null,
+      "taskType": "report",
+      "stepNumber": 4,
+      "result": null
+    }
+  ]
+}
