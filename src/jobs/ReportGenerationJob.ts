@@ -3,7 +3,7 @@ import { Job } from './Job';
 import { Workflow } from '../models/Workflow';
 import { TaskStatus } from '../workers/taskRunner';
 import { Repository } from 'typeorm';
-import { generateReport } from '../utils/report';
+import { generateReportV2 } from '../utils/report';
 
 interface Report {
     workflowId: string;
@@ -41,7 +41,7 @@ export class ReportGenerationJob implements Job {
                     type: t.taskType,
                     output: t.result.data,
                 })),
-                finalReport: generateReport(tasks),
+                finalReport: generateReportV2(tasks),
             };
             return result;
         } catch (error) {

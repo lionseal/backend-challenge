@@ -20,3 +20,18 @@ export function generateReport(tasks: Task[]): string {
         )
         .join('\n');
 }
+
+/**
+ * Created V2 since the human readable report is not nice without a frontend...
+ */
+export function generateReportV2(tasks: Task[]): string {
+    return JSON.stringify(
+        tasks.reduce(
+            (acc, task) => ({
+                ...acc,
+                [`Task #${task.stepNumber} ${task.taskType} ${task.status}`]: JSON.parse(task.result.data || '{}'),
+            }),
+            {}
+        )
+    );
+}

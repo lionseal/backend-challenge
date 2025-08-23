@@ -22,7 +22,7 @@ describe('WorkflowFactory', () => {
             post_workflow.clientId,
             JSON.stringify(post_workflow.geoJson)
         );
-        expect(saveMock).toHaveBeenCalledTimes(3);
+        expect(saveMock).toHaveBeenCalledTimes(4);
         expect(saveMock.mock.calls[0][0]).toMatchObject({
             clientId: post_workflow.clientId,
             status: WorkflowStatus.Initial,

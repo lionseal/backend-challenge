@@ -41,14 +41,14 @@ describe('WorkflowService', () => {
             const workflow = {
                 workflowId: 'workflowId',
                 status: WorkflowStatus.Completed,
-                finalResult: 'test final results',
+                finalResult: JSON.stringify({ 'Task #1 test completed': 'test final results' }),
             };
             findOneMock.mockResolvedValue(workflow);
             const result = await workflowService.getWorkflowResults('workflowId');
             expect(result).toEqual({
                 workflowId: 'workflowId',
                 status: 'completed',
-                finalResult: 'test final results',
+                finalResult: { 'Task #1 test completed': 'test final results' },
             });
         });
 

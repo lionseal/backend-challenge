@@ -10,7 +10,7 @@ Extra: added tests and the job to the job factory.
 Step 2
 1. done
 2. done
-3. Tried to keep a human readable format for finalReport, had to add Task.result to fetch them in a single query.
+3. Tried to keep a human readable format for finalReport, had to add Task.result to fetch them in a single query. Note: changed format to JSON it looks better on the /api-docs
 4. Since it's using a Task and taskRunner, this is being handled automatically, I will probably have to change it in next steps.
 
 Since it's not specified if this job should be manually added to the workflow yaml, I forced it as the last step so all workflows get this step.

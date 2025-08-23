@@ -5,7 +5,7 @@ import { WorkflowStatus } from '../workflows/WorkflowFactory';
 import { Workflow } from '../models/Workflow';
 import { Result } from '../models/Result';
 import { JobInputs } from '../jobs/Job';
-import { generateReport } from '../utils/report';
+import { generateReportV2 } from '../utils/report';
 
 export enum TaskStatus {
     Queued = 'queued',
@@ -72,10 +72,10 @@ export class TaskRunner {
 
             if (anyFailed) {
                 currentWorkflow.status = WorkflowStatus.Failed;
-                currentWorkflow.finalResult = generateReport(currentWorkflow.tasks);
+                currentWorkflow.finalResult = generateReportV2(currentWorkflow.tasks);
             } else if (allCompleted) {
                 currentWorkflow.status = WorkflowStatus.Completed;
-                currentWorkflow.finalResult = generateReport(currentWorkflow.tasks);
+                currentWorkflow.finalResult = generateReportV2(currentWorkflow.tasks);
             } else {
                 currentWorkflow.status = WorkflowStatus.InProgress;
             }

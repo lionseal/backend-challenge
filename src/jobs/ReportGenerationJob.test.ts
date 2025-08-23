@@ -23,15 +23,11 @@ describe('ReportGenerationJob', () => {
                 { taskId: workflow.tasks[1].taskId, type: 'area', output: '{"area":8363324.273315565}' },
                 { taskId: workflow.tasks[2].taskId, type: 'notification', output: '{}' },
             ],
-            finalReport:
-                'Task #1 analysis completed, result:\n' +
-                '"Brazil"\n' +
-                'Task #2 area completed, result:\n' +
-                '{\n' +
-                '  "area": 8363324.273315565\n' +
-                '}\n' +
-                'Task #3 notification completed, result:\n' +
-                '{}',
+            finalReport: JSON.stringify({
+                'Task #1 analysis completed': 'Brazil',
+                'Task #2 area completed': { area: 8363324.273315565 },
+                'Task #3 notification completed': {},
+            }),
         });
     });
 
@@ -66,18 +62,14 @@ describe('ReportGenerationJob', () => {
                     output: '{"error":"Simulated email failure","stack":"Error: Simulated email failure\\n    at EmailNotificationJob.run (/backend-challenge/src/jobs/EmailNotificationJob.ts:10:15)\\n    at async TaskRunner.run (/backend-challenge/src/workers/taskRunner.ts:32:32)\\n    at async taskWorker (/backend-challenge/src/workers/taskWorker.ts:18:17)"}',
                 },
             ],
-            finalReport:
-                'Task #1 analysis completed, result:\n' +
-                '"Brazil"\n' +
-                'Task #2 area completed, result:\n' +
-                '{\n' +
-                '  "area": 8363324.273315565\n' +
-                '}\n' +
-                'Task #3 notification failed, result:\n' +
-                '{\n' +
-                '  "error": "Simulated email failure",\n' +
-                '  "stack": "Error: Simulated email failure\\n    at EmailNotificationJob.run (/backend-challenge/src/jobs/EmailNotificationJob.ts:10:15)\\n    at async TaskRunner.run (/backend-challenge/src/workers/taskRunner.ts:32:32)\\n    at async taskWorker (/backend-challenge/src/workers/taskWorker.ts:18:17)"\n' +
-                '}',
+            finalReport: JSON.stringify({
+                'Task #1 analysis completed': 'Brazil',
+                'Task #2 area completed': { area: 8363324.273315565 },
+                'Task #3 notification failed': {
+                    error: 'Simulated email failure',
+                    stack: 'Error: Simulated email failure\n    at EmailNotificationJob.run (/backend-challenge/src/jobs/EmailNotificationJob.ts:10:15)\n    at async TaskRunner.run (/backend-challenge/src/workers/taskRunner.ts:32:32)\n    at async taskWorker (/backend-challenge/src/workers/taskWorker.ts:18:17)',
+                },
+            }),
         });
     });
 });

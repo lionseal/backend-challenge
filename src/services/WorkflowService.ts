@@ -27,7 +27,7 @@ export class WorkflowService {
         return {
             workflowId: workflow.workflowId,
             status: workflow.status,
-            finalResult: workflow.finalResult,
+            finalResult: JSON.parse(workflow.finalResult || '{}'),
         };
     }
 }
