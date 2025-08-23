@@ -43,32 +43,53 @@ This repository demonstrates a backend architecture that handles asynchronous ta
 
 ```
 src
-├─ models/
+├─ controllers/               # NEW: Controller layer to handle calls between express request/response and services (business logic)
+│   ├─ WorkflowController.ts  # NEW: Handles new workflow routes
+│   ├─ responseHandler.ts     # NEW: Handles sending express responses
+│
+├─ data/
 │   ├─ world_data.json  # Contains world data for analysis
 │
-├─ models/
-│   ├─ Result.ts        # Defines the Result entity
-│   ├─ Task.ts          # Defines the Task entity
-│   ├─ Workflow.ts      # Defines the Workflow entity
+├─ fixtures/  # NEW: Data used in test files
 │
 ├─ jobs/
-│   ├─ Job.ts           # Job interface
-│   ├─ JobFactory.ts    # getJobForTaskType function for mapping taskType to a Job
-│   ├─ TaskRunner.ts    # Handles job execution & task/workflow state transitions
 │   ├─ DataAnalysisJob.ts (example)
 │   ├─ EmailNotificationJob.ts (example)
+│   ├─ Job.ts                    # Job interface
+│   ├─ JobFactory.ts             # getJobForTaskType function for mapping taskType to a Job
+│   ├─ PolygonAreaJob.ts         # NEW: Calculates the area of a polygon from the GeoJSON provided in the task
+│   ├─ ReportGenerationJob.ts    # NEW: Generates a report by aggregating the outputs of multiple tasks in the workflow
 │
-├─ workflows/
-│   ├─ WorkflowFactory.ts  # Creates workflows & tasks from a YAML definition
+├─ middlewares/
+│   ├─ errorHandler.ts  # NEW: Contains asyncHandler utility to catch exceptions and pass them to a generic error handler for express
 │
-├─ workers/
-│   ├─ taskWorker.ts    # Background worker that fetches queued tasks & runs them
+├─ models/
+│   ├─ Result.ts     # Defines the Result entity
+│   ├─ Task.ts       # Defines the Task entity
+│   ├─ Workflow.ts   # Defines the Workflow entity
 │
 ├─ routes/
-│   ├─ analysisRoutes.ts # POST /analysis endpoint to create workflows
+│   ├─ analysisRoutes.ts   # POST /analysis endpoint to create workflows
+│   ├─ defaultRoute.ts     # UPDATED: renders/serves Readme file and api docs
+│   ├─ workflowRoutes.ts   # NEW: GET routes for workflow status and report
 │
-├─ data-source.ts       # TypeORM DataSource configuration
-└─ index.ts             # Express.js server initialization & starting the worker
+├─ services/               # NEW: Business logic here
+│   ├─ WorkflowService.ts  # NEW: Workflow related business logic
+│
+├─ utils/
+│   ├─ graph.ts   # NEW: Contains utility functions to detect cyclic dependencies in workflow files
+│   ├─ report.ts  # NEW: Contains different ways to generate finalReport field
+│
+├─ workers/
+│   ├─ taskRunner.ts  # Handles job execution & task/workflow state transitions
+│   ├─ taskWorker.ts  # Background worker that fetches queued tasks & runs them
+│
+├─ workflows/
+│   ├─ *.yaml              # Available workflows YAML definitions
+│   ├─ WorkflowFactory.ts  # Creates workflows & tasks from a YAML definition
+│
+├─ data-source.ts    # TypeORM DataSource configuration
+└─ index.ts          # Express.js server initialization & starting the worker
 ```
 
 ## Getting Started
@@ -332,3 +353,63 @@ Implement an API endpoint to retrieve the final results of a completed workflow.
   - Document the API endpoints with request and response examples.
 
 ---
+
+## New Features
+
+### Manual tests
+
+Start the server with 
+```bash
+yarn dev or npm run dev
+```
+
+And navigate to http://localhost:3000/api-docs
+![alt text](public/image-1.png)
+Where you will find the 3 endpoints described below
+
+#### Creating Workflows (no usage changes from previous implementation)
+![alt text](public/image-2.png)
+1. Click on it to autoscroll to the endpoint definition
+2. Here you will see the details of the endpoint and examples
+3. Click on `Test Request` to open the testing modal
+
+![alt text](public/image-3.png)
+1. Request is prefilled with example from this readme, update as needed
+2. Click send
+3. Copy the workflowId to use it in next steps
+
+Notes:
+- Feel free to update `example_workflow.yml` to change the workflow. (available reports can be found at JobFactory.ts)
+- There is a `cyclic_workflow.yml` used in automatic tests to check if detecting is working (changing this file only affects test files)
+
+#### Getting a workflow status
+
+![alt text](public/image-4.png)
+1. Fill the ID in the GET status endpoint
+2. Click send
+3. Workflow status
+
+#### Getting a workflow result
+
+![alt text](public/image-5.png)
+1. Fill the ID in the GET results endpoint
+2. Click send
+3. Workflow result
+
+Note: workflow has to finish first, else you will get a 400 bad request error
+
+### Automated tests
+
+Added a few packages for testing
+
+```bash
+yarn install or npm install
+```
+
+To run tests just run the command below
+
+```bash
+yarn test
+```
+
+![alt text](public/image-6.png)
