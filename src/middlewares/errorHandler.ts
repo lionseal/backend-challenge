@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { handleError } from './responseHandler';
+import { handleError } from '../controllers/responseHandler';
 
 function toHttpError(error: Error): { statusCode: number; message: string } {
     let statusCode = 500;

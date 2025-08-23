@@ -1,5 +1,5 @@
 import { asyncHandler } from '../middlewares/errorHandler';
-import { handleOk } from '../middlewares/responseHandler';
+import { handleOk } from './responseHandler';
 import { WorkflowService } from '../services/WorkflowService';
 
 export class WorkflowController {
