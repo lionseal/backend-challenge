@@ -41,3 +41,7 @@ route definition => controller (calls the service and handles the response) => s
 
 Step 6
 1. done
+
+
+Documentation:
+Added /api-docs route with openapi documentation for endpoints

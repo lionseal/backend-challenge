@@ -1,0 +1,179 @@
+openapi: 3.0.4
+info:
+  title: Workflow API
+  version: 1.0.0
+paths:
+  /analysis:
+    post:
+      tags:
+        - Workflow
+      summary: Create a new workflow
+      description: Creates a new workflow with the provided client ID and GeoJSON data.
+      operationId: createWorkflow
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateWorkflow'
+      responses:
+        '202':
+          $ref: '#/components/responses/WorkflowCreated'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /workflow/{workflowId}/status:
+    get:
+      tags:
+        - Workflow
+      summary: Get workflow status
+      description: Retrieves the status of a workflow by its ID.
+      operationId: getWorkflowStatus
+      parameters:
+        - $ref: '#/components/parameters/WorkflowId'
+      responses:
+        '200':
+          $ref: '#/components/responses/WorkflowStatus'
+        '404':
+          $ref: '#/components/responses/WorkflowNotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /workflow/{workflowId}/results:
+    get:
+      tags:
+        - Workflow
+      summary: Get workflow results
+      description: Retrieves the results of a completed workflow by its ID.
+      operationId: getWorkflowResults
+      parameters:
+        - $ref: '#/components/parameters/WorkflowId'
+      responses:
+        '200':
+          $ref: '#/components/responses/WorkflowResults'
+        '400':
+          $ref: '#/components/responses/WorkflowIsNotCompleted'
+        '404':
+          $ref: '#/components/responses/WorkflowNotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  schemas:
+    CreateWorkflow:
+      type: object
+      properties:
+        clientId:
+          type: string
+        geoJson:
+          type: object
+          properties:
+            type:
+              type: string
+            coordinates:
+              type: array
+              items:
+                type: array
+                items:
+                  type: array
+                  items:
+                    type: number
+      example:
+        clientId: "client123"
+        geoJson:
+          type: "Polygon"
+          coordinates:
+            - - [-63.624885020050996, -10.311050368263523]
+              - [-63.624885020050996, -10.367865108370523]
+              - [-63.61278302732815, -10.367865108370523]
+              - [-63.61278302732815, -10.311050368263523]
+              - [-63.624885020050996, -10.311050368263523]
+    NotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Workflow not found
+    BadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Workflow is not yet completed
+    InternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal server error
+  responses:
+    WorkflowCreated:
+      description: Workflow created successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Workflow created successfully
+              workflowId:
+                type: string
+                example: 123e4567-e89b-12d3-a456-426614174000
+    WorkflowStatus:
+      description: Workflow status retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              workflowId:
+                type: string
+                example: 123e4567-e89b-12d3-a456-426614174000
+              status:
+                type: string
+                example: completed
+              completedTasks:
+                type: integer
+                example: 5
+              totalTasks:
+                type: integer
+                example: 5
+    WorkflowResults:
+      description: Workflow results retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              workflowId:
+                type: string
+                example: 123e4567-e89b-12d3-a456-426614174000
+              status:
+                type: string
+                example: completed
+              results:
+                type: string
+                example: tbd
+    WorkflowIsNotCompleted:
+      description: Workflow is not yet completed
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/BadRequestError"
+    WorkflowNotFound:
+      description: Workflow not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/NotFoundError"
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/InternalServerError"
+  parameters:
+    WorkflowId:
+      name: workflowId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The ID of the workflow to retrieve.

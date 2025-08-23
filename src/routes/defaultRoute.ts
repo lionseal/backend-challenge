@@ -6,6 +6,8 @@ import { marked } from "marked";
 const router = express.Router();
 const staticPath = path.join(__dirname, "../../public");
 router.use("/public", express.static(staticPath));
+router.use("/api-docs", express.static(path.join(__dirname, "../../docs/api-docs.html")));
+router.use("/openapi.yaml", express.static(path.join(__dirname, "../../docs/openapi.yaml")));
 
 router.get("/", (req, res) => {
   const readmePath = path.join(__dirname, "../..", "README.md");
