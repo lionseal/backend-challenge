@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import { handleError } from './responseHandler';
 
 function toHttpError(error: Error): { statusCode: number; message: string } {
     let statusCode = 500;
@@ -42,7 +43,7 @@ export function expressErrorHandler(error: Error, req: Request, res: Response, n
         return next(error);
     }
     const { statusCode, message } = toHttpError(error);
-    res.status(statusCode).json({ message });
+    handleError(req, res, statusCode, message);
 }
 
 export function asyncHandler(fn: (req: Request, res: Response, next: NextFunction) => Promise<any>) {
