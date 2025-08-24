@@ -2,14 +2,19 @@
 
 ## New Features
 
-### Manual tests
-
-Start the server with 
+### Install dependencies
 ```bash
-yarn dev or npm run dev
+yarn install
 ```
 
-And navigate to http://localhost:3000/api-docs
+### Manual tests
+
+Start the server with
+```bash
+yarn dev
+```
+
+And navigate to [/api-docs](http://localhost:3000/api-docs)
 ![alt text](public/image-1.png)
 Where you will find the 3 endpoints described below
 
@@ -46,12 +51,6 @@ Note: workflow has to finish first, else you will get a 400 bad request error
 
 ### Automated tests
 
-Added a few packages for testing
-
-```bash
-yarn install or npm install
-```
-
 To run tests just run the command below
 
 ```bash
@@ -60,9 +59,15 @@ yarn test
 
 ![alt text](public/image-6.png)
 
+### Endpoints Documentation
+
+Can be found in the /docs folder or accessing [/api-docs](http://localhost:3000/api-docs)
+
+### Other
+
+Project Structure section below have been updated
 
 ---
-Some sections below have been updated
 
 ## Getting Started
 
@@ -106,54 +111,58 @@ This repository demonstrates a backend architecture that handles asynchronous ta
 ## Project Structure
 
 ```
-src
-├─ controllers/               # NEW: Controller layer to handle calls between express request/response and services (business logic)
-│   ├─ WorkflowController.ts  # NEW: Handles new workflow routes
-│   ├─ responseHandler.ts     # NEW: Handles sending express responses
-│
-├─ data/
-│   ├─ world_data.json  # Contains world data for analysis
-│
-├─ fixtures/  # NEW: Data used in test files
-│
-├─ jobs/
-│   ├─ DataAnalysisJob.ts (example)
-│   ├─ EmailNotificationJob.ts (example)
-│   ├─ Job.ts                    # Job interface
-│   ├─ JobFactory.ts             # getJobForTaskType function for mapping taskType to a Job
-│   ├─ PolygonAreaJob.ts         # NEW: Calculates the area of a polygon from the GeoJSON provided in the task
-│   ├─ ReportGenerationJob.ts    # NEW: Generates a report by aggregating the outputs of multiple tasks in the workflow
-│
-├─ middlewares/
-│   ├─ errorHandler.ts  # NEW: Contains asyncHandler utility to catch exceptions and pass them to a generic error handler for express
-│
-├─ models/
-│   ├─ Result.ts     # Defines the Result entity
-│   ├─ Task.ts       # Defines the Task entity
-│   ├─ Workflow.ts   # Defines the Workflow entity
-│
-├─ routes/
-│   ├─ analysisRoutes.ts   # POST /analysis endpoint to create workflows
-│   ├─ defaultRoute.ts     # UPDATED: renders/serves Readme file and api docs
-│   ├─ workflowRoutes.ts   # NEW: GET routes for workflow status and report
-│
-├─ services/               # NEW: Business logic here
-│   ├─ WorkflowService.ts  # NEW: Workflow related business logic
-│
-├─ utils/
-│   ├─ graph.ts   # NEW: Contains utility functions to detect cyclic dependencies in workflow files
-│   ├─ report.ts  # NEW: Contains different ways to generate finalReport field
-│
-├─ workers/
-│   ├─ taskRunner.ts  # Handles job execution & task/workflow state transitions
-│   ├─ taskWorker.ts  # Background worker that fetches queued tasks & runs them
-│
-├─ workflows/
-│   ├─ *.yaml              # Available workflows YAML definitions
-│   ├─ WorkflowFactory.ts  # Creates workflows & tasks from a YAML definition
-│
-├─ data-source.ts    # TypeORM DataSource configuration
-└─ index.ts          # Express.js server initialization & starting the worker
+/
+├─ docs/
+│  ├─ api-docs.html  # NEW: Basic html to render open api documentation using scalar
+│  └─ openapi.yaml   # NEW: Open api specs
+└─ src/
+   ├─ controllers/               # NEW: Controller layer to handle calls between express request/response and services (business logic)
+   │   ├─ WorkflowController.ts  # NEW: Handles new workflow routes
+   │   └─ responseHandler.ts     # NEW: Handles sending express responses
+   │
+   ├─ data/
+   │   └─ world_data.json  # Contains world data for analysis
+   │
+   ├─ fixtures/  # NEW: Data used in test files
+   │
+   ├─ jobs/
+   │   ├─ DataAnalysisJob.ts (example)
+   │   ├─ EmailNotificationJob.ts (example)
+   │   ├─ Job.ts                    # Job interface
+   │   ├─ JobFactory.ts             # getJobForTaskType function for mapping taskType to a Job
+   │   ├─ PolygonAreaJob.ts         # NEW: Calculates the area of a polygon from the GeoJSON provided in the task
+   │   └─ ReportGenerationJob.ts    # NEW: Generates a report by aggregating the outputs of multiple tasks in the workflow
+   │
+   ├─ middlewares/
+   │   └─ errorHandler.ts  # NEW: Contains asyncHandler utility to catch exceptions and pass them to a generic error handler for express
+   │
+   ├─ models/
+   │   ├─ Result.ts     # Defines the Result entity
+   │   ├─ Task.ts       # Defines the Task entity
+   │   └─ Workflow.ts   # Defines the Workflow entity
+   │
+   ├─ routes/
+   │   ├─ analysisRoutes.ts   # POST /analysis endpoint to create workflows
+   │   ├─ defaultRoute.ts     # UPDATED: renders/serves Readme file and api docs
+   │   └─ workflowRoutes.ts   # NEW: GET routes for workflow status and report
+   │
+   ├─ services/               # NEW: Business logic here
+   │   └─ WorkflowService.ts  # NEW: Workflow related business logic
+   │
+   ├─ utils/
+   │   ├─ graph.ts   # NEW: Contains utility functions to detect cyclic dependencies in workflow files
+   │   └─ report.ts  # NEW: Contains different ways to generate finalReport field
+   │
+   ├─ workers/
+   │   ├─ taskRunner.ts  # Handles job execution & task/workflow state transitions
+   │   └─ taskWorker.ts  # Background worker that fetches queued tasks & runs them
+   │
+   ├─ workflows/
+   │   ├─ *.yaml              # Available workflows YAML definitions
+   │   └─ WorkflowFactory.ts  # Creates workflows & tasks from a YAML definition
+   │
+   ├─ data-source.ts    # TypeORM DataSource configuration
+   └─ index.ts          # Express.js server initialization & starting the worker
 ```
 
 ## Getting Started
