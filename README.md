@@ -1,5 +1,69 @@
 # Backend Coding Challenge
 
+## New Features
+
+### Manual tests
+
+Start the server with 
+```bash
+yarn dev or npm run dev
+```
+
+And navigate to http://localhost:3000/api-docs
+![alt text](public/image-1.png)
+Where you will find the 3 endpoints described below
+
+#### Creating Workflows (no usage changes from previous implementation)
+![alt text](public/image-2.png)
+1. Click on it to autoscroll to the endpoint definition
+2. Here you will see the details of the endpoint and examples
+3. Click on `Test Request` to open the testing modal
+
+![alt text](public/image-3.png)
+1. Request is prefilled with example from this readme, update as needed
+2. Click send
+3. Copy the workflowId to use it in next steps
+
+Notes:
+- Feel free to update `example_workflow.yml` to change the workflow. (available reports can be found at JobFactory.ts)
+- There is a `cyclic_workflow.yml` used in automatic tests to check if detecting is working (changing this file only affects test files)
+
+#### Getting a workflow status
+
+![alt text](public/image-4.png)
+1. Fill the ID in the GET status endpoint
+2. Click send
+3. Workflow status
+
+#### Getting a workflow result
+
+![alt text](public/image-5.png)
+1. Fill the ID in the GET results endpoint
+2. Click send
+3. Workflow result
+
+Note: workflow has to finish first, else you will get a 400 bad request error
+
+### Automated tests
+
+Added a few packages for testing
+
+```bash
+yarn install or npm install
+```
+
+To run tests just run the command below
+
+```bash
+yarn test
+```
+
+![alt text](public/image-6.png)
+
+
+---
+Some sections below have been updated
+
 ## Getting Started
 
 1. Fork the Project:
@@ -353,63 +417,3 @@ Implement an API endpoint to retrieve the final results of a completed workflow.
   - Document the API endpoints with request and response examples.
 
 ---
-
-## New Features
-
-### Manual tests
-
-Start the server with 
-```bash
-yarn dev or npm run dev
-```
-
-And navigate to http://localhost:3000/api-docs
-![alt text](public/image-1.png)
-Where you will find the 3 endpoints described below
-
-#### Creating Workflows (no usage changes from previous implementation)
-![alt text](public/image-2.png)
-1. Click on it to autoscroll to the endpoint definition
-2. Here you will see the details of the endpoint and examples
-3. Click on `Test Request` to open the testing modal
-
-![alt text](public/image-3.png)
-1. Request is prefilled with example from this readme, update as needed
-2. Click send
-3. Copy the workflowId to use it in next steps
-
-Notes:
-- Feel free to update `example_workflow.yml` to change the workflow. (available reports can be found at JobFactory.ts)
-- There is a `cyclic_workflow.yml` used in automatic tests to check if detecting is working (changing this file only affects test files)
-
-#### Getting a workflow status
-
-![alt text](public/image-4.png)
-1. Fill the ID in the GET status endpoint
-2. Click send
-3. Workflow status
-
-#### Getting a workflow result
-
-![alt text](public/image-5.png)
-1. Fill the ID in the GET results endpoint
-2. Click send
-3. Workflow result
-
-Note: workflow has to finish first, else you will get a 400 bad request error
-
-### Automated tests
-
-Added a few packages for testing
-
-```bash
-yarn install or npm install
-```
-
-To run tests just run the command below
-
-```bash
-yarn test
-```
-
-![alt text](public/image-6.png)
